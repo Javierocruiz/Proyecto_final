@@ -1,10 +1,121 @@
-.DS_Store
-applet
-application.linux-arm64
-application.linux-armv6hf
-application.linux32
-application.linux64
-application.windows32
-application.windows64
-application.macosx
-out
+import oscP5.*;
+import netP5.*;
+
+
+OscP5 oscP5;
+
+
+NetAddress direccionRemota;
+
+float valor;
+float volumen;
+int circle_color;
+int global;
+int a;
+int b;
+int c;
+int d;
+PImage imagen1;
+PImage imagen2;
+
+
+void setup() 
+
+{
+  size(1267,713);
+  
+
+  imagen1 = loadImage("galaxia.png");
+  image(imagen1,0,0);
+  
+  imagen2 = loadImage("livemusic.png");
+  image(imagen2,0,0);
+  
+  frameRate(30);
+  
+  oscP5 = new OscP5(this,12000);
+  
+  
+  direccionRemota = new NetAddress("localhost", 12001);
+
+}
+  
+  
+void draw() 
+
+{
+  smooth(); 
+  
+  imagen1 = loadImage("galaxia.png");
+  image(imagen1,0,0);
+  
+  imagen2 = loadImage("livemusic.png");
+  image(imagen2,0,0);
+  tint(255,valor*500*volumen); 
+   fill(100,200,circle_color);
+   ellipse(400-a,356,valor*200*volumen, valor*200*volumen);
+   
+   fill(000,circle_color,200);
+   ellipse(900+b,356,valor*200*volumen, valor*200*volumen);
+   
+   fill(250,000,circle_color);
+   rect(633,100+c,valor*300*volumen, valor*100*volumen);
+      
+   fill(circle_color,150,50);
+   rect(633,650-d,valor*300*volumen, valor*100*volumen);
+   
+}
+
+    
+void oscEvent(OscMessage theOscMessage)
+{
+ 
+   
+      if(theOscMessage.checkAddrPattern("/osc")==true)
+         { 
+              valor = theOscMessage.get(0).floatValue();
+                }
+         
+         
+         
+      if(theOscMessage.checkAddrPattern("/color")==true)
+         {
+              circle_color = theOscMessage.get(0).intValue();
+
+               }
+               
+        
+        
+      if(theOscMessage.checkAddrPattern("/volumen")==true)
+         {
+              volumen = theOscMessage.get(0).floatValue();
+        
+               }
+               
+        
+      if(theOscMessage.checkAddrPattern("/w")==true)
+         {
+              a = theOscMessage.get(0).intValue();
+               }
+        
+        
+        
+      if(theOscMessage.checkAddrPattern("/x")==true)
+         {
+              b = theOscMessage.get(0).intValue();
+               }
+               
+        
+      if(theOscMessage.checkAddrPattern("/y")==true)
+         {
+              c = theOscMessage.get(0).intValue();
+               }
+               
+        
+      if(theOscMessage.checkAddrPattern("/z")==true)
+         {
+              d= theOscMessage.get(0).intValue();
+     
+               }
+             
+ }
